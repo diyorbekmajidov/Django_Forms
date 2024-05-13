@@ -3,8 +3,10 @@ from .models import CustomUser
 
 class CustomUserAdmin(admin.ModelAdmin):
     fieldsets = [
-        ("Header", {"fields": ['password', 'email', 'username'],}),
-        ("Content", {"fields": ['status'],}),
+        ('Header', {'fields': ['username', 'password']}),
+        ('Personal info', {'fields': ['email', 'status']}),
+        ('Permissions', {'fields': ['is_active', 'is_staff', 'is_superuser',]}),
+        ('Important dates', {'fields': ['last_login',]}),
     ]
 
 admin.site.register(CustomUser, CustomUserAdmin)
