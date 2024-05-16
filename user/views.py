@@ -1,34 +1,34 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import get_user_model, login, authenticate, logout
-from .forms import UserRegistrationForm
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+
+from .forms import UserRegistrationForm, UserLoginForm
+from .decorators import user_not_authenticated
 
 # Create your views here.
+@user_not_authenticated
 def register(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f"Registration successful. {user.username}")
+            messages.success(request, f"New account created: {user.username}")
             return redirect('/')
 
         else:
             for error in list(form.errors.values()):
-                messages.error  (request, error)
+                messages.error(request, error)
 
     else:
         form = UserRegistrationForm()
 
     return render(
         request=request,
-        template_name = "users/register.html",
+        template_name="users/register.html",
         context={"form": form}
-    )
+        )
 
 def custom_logout(request):
     logout(request)
@@ -40,7 +40,7 @@ def custom_login(request):
         return redirect("homapage")
     
     if request.method == "POST":
-        form = AuthenticationForm(request=request, data = request.POST)
+        form = UserLoginForm(request=request, data = request.POST)
         if form.is_valid():
             user = authenticate(
                 username = form.cleaned_data.get("username"),
@@ -54,7 +54,7 @@ def custom_login(request):
             for error in list(form.errors.values()):
                 messages.error(request, error) 
 
-    form = AuthenticationForm()
+    form = UserLoginForm()
 
     return render(
         request=request,

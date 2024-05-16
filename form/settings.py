@@ -46,6 +46,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 AUTH_USER_MODEL = "user.CustomUser"
 LOGIN_REDIRECT_URL = '/'
+AUTHENTICATION_BACKENDS = ['user.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
