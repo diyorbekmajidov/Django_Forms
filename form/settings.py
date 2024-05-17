@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap4',
+    'django_recaptcha',
     'user',
     'main',
 ]
@@ -46,7 +47,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 AUTH_USER_MODEL = "user.CustomUser"
 LOGIN_REDIRECT_URL = '/'
-AUTHENTICATION_BACKENDS = ['user.backends.EmailBackend']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -119,6 +119,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+AUTHENTICATION_BACKENDS = ['user.backends.EmailBackend']
+RECAPTCHA_PUBLIC_KEY = '6Lc_b94pAAAAAGCJ1tN-mPHb03XdRZPmN27gW2KB'
+RECAPTCHA_PRIVATE_KEY = '6Lc_b94pAAAAANX0QPbsf4tWlJgUAPZO8dOp6lyF'
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
 
 # Static files (CSS, JavaScript, Images)
