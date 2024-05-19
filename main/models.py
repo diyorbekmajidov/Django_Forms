@@ -1,13 +1,20 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from django.template.defaultfilters import slugify
+import os
 
 class ArticleSeries(models.Model):
+    def image_upload_to(self, instance=None):
+        if instance:
+            return os.path.join("ArticleSeries", slugify(self.slug), instance)
+        return None
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200, default="", blank=True) 
     slug = models.SlugField("Series slug", null=False, blank=False, unique=True)
     published = models.DateTimeField("Date published", default=timezone.now)
-    author = models.ForeignKey(get_user_model(),default=1, on_delete=models.SET_DEFAULT)
+    author = models.ForeignKey(get_user_model(),default=1, on_delete=models.SET_DEFAULT, max_length=255)
+    image = models.ImageField(default='default/1.jpg', upload_to=image_upload_to, max_length=255)
 
     def __str__(self):
         return self.title
@@ -17,6 +24,11 @@ class ArticleSeries(models.Model):
         ordering = ['-published']
 
 class Article(models.Model):
+    def image_upload_to(self, instance=None):
+        if instance:
+            return os.path.join("Article", slugify(self.series.slug), instance)
+        return None
+
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200, default="", blank=True)
     article_slug = models.SlugField("Article slug", null=False, blank=False, unique=True)
@@ -24,6 +36,7 @@ class Article(models.Model):
     modified = models.DateTimeField("Date modified", default=timezone.now)
     series = models.ForeignKey(ArticleSeries, default="", verbose_name="Series", on_delete=models.SET_DEFAULT)
     author = models.ForeignKey(get_user_model(),default=1, on_delete=models.SET_DEFAULT)
+    image = models.ImageField(default='default/1.jpg', upload_to=image_upload_to, max_length=255)
 
     def __str__(self):
         return self.title

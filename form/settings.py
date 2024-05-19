@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -125,6 +126,8 @@ RECAPTCHA_PUBLIC_KEY = '6Lc_b94pAAAAAGCJ1tN-mPHb03XdRZPmN27gW2KB'
 RECAPTCHA_PRIVATE_KEY = '6Lc_b94pAAAAANX0QPbsf4tWlJgUAPZO8dOp6lyF'
 SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
