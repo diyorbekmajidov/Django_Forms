@@ -5,7 +5,8 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path('login/', views.custom_login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
-    path('profile/<str:username>/', views.user_profile, name='profile')
+    path('profile/<str:username>/', views.profile, name='profile'),
+    path('activate/<uidb64>/<token>', views.activate, name='activate')
     # path("login/", auth_views.LoginView.as_view(template_name='users/login.html'), name="login"),
     # path("logout/", auth_views.LogoutView.as_view(template_name='users/logout.html'), name="logout"),
 ]
