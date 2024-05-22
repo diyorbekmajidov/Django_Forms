@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.base_user import BaseUserManager
 import os
 
 class CustomUser(AbstractUser):
@@ -21,6 +22,28 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+
+class ManagerCustomUser(BaseUserManager):
+    def create_user(self, password, email, **extra_feild):
+        if not email:
+            raise ValueError("User must have an email address")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_feild)
+        user.set_password(password)
+        user.save()
+        return user
+    
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+        return self.create_user(password, email, **extra_fields)
+    
     
 
 
