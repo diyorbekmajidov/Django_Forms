@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import CustomUser
+from .models import CustomUser,SubscribedUsers
+
+
+class SubscribedUsersAdmin(admin.ModelAdmin):
+    list_display = ('email', 'name', 'created_date')
 
 class CustomUserAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -10,3 +14,4 @@ class CustomUserAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(SubscribedUsers, SubscribedUsersAdmin)

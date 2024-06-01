@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
-    'crispy_bootstrap4',
-    'django_recaptcha',
-    'user',
+    # Add our new application
     'main',
+    'user',
+    'tinymce',
+    'fontawesomefree',
+    'crispy_forms',
+    'captcha',
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -124,7 +126,7 @@ USE_TZ = True
 AUTHENTICATION_BACKENDS = ['user.backends.EmailBackend']
 RECAPTCHA_PUBLIC_KEY = '6Lc_b94pAAAAAGCJ1tN-mPHb03XdRZPmN27gW2KB'
 RECAPTCHA_PRIVATE_KEY = '6Lc_b94pAAAAANX0QPbsf4tWlJgUAPZO8dOp6lyF'
-SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -145,7 +147,30 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5MB
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'custom_undo_redo_levels': 100,
+    'selector': 'textarea',
+    "menubar": "file edit view insert format tools table help",
+    'plugins': 'link image preview codesample contextmenu table code lists fullscreen',
+    'toolbar1': 'undo redo | backcolor casechange permanentpen formatpainter removeformat formatselect fontselect fontsizeselect',
+    'toolbar2': 'bold italic underline blockquote | alignleft aligncenter alignright alignjustify '
+               '| bullist numlist | outdent indent | table | link image | codesample | preview code | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+    'contextmenu': 'formats | link image',
+    'block_formats': 'Paragraph=p; Header 1=h1; Header 2=h2',
+    'fontsize_formats': "8pt 10pt 12pt 14pt 16pt 18pt",
+    'content_style': "body { font-family: Arial; background: white; color: black; font-size: 12pt}",
+    'codesample_languages': [
+        {'text': 'Python', 'value': 'python'}, {'text': 'HTML/XML', 'value': 'markup'},],
+    'image_class_list': [{'title': 'Fluid', 'value': 'img-fluid', 'style': {} }],
+    'width': 'auto',
+    "height": "600px",
+    'image_caption': True,
+    "images_upload_url": "upload_image",
+}
